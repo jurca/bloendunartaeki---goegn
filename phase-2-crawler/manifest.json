@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+    "name": "Phase 2 crawler",
+    "version": "1.0",
+
+    "browser_action": {
+        "browser_style": true,
+        "default_title": "Phase 2 crawler"
+    },
+
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+
+    "permissions": [
+        "tabs",
+        "https://web.archive.org/"
+    ]
+}

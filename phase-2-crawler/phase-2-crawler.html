@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Phase 2 extractor</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    </head>
+    <body>
+        <div class="container">
+            <h1>Phase 2 extractor</h1>
+            <div class="row">
+                <div class="col-6 d-flex flex-column">
+                    <h2>Snapshot links</h2>
+                    <textarea id="input" class="form-control flex-grow-1" placeholder="Paste phase 1 result here&hellip;"></textarea>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Current link index:</label>
+                        <div class="input-group">
+                            <input id="currentLinkIndex" class="form-control text-right" readonly>
+                            <div class="input-group-append">
+                                <span class="input-group-text"> / </span>
+                                <input id="linkCount" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Current link:</label>
+                        <input id="currentLink" class="form-control" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center p-2">
+                <button class="btn btn-primary" disabled id="run">run</button>
+                <button class="btn btn-secondary" disabled id="pause">pause</button>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="form-group">
+                        <label>Delay between requests:</label>
+                        <div class="input-group">
+                            <input type="number" min="0" id="delayBetweenRequests" class="form-control" value="1000">
+                            <div class="input-group-append">
+                                <span class="input-group-text">ms</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h2>Result</h2>
+                    <textarea id="result" class="form-control" readonly></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!--
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        -->
+
+        <script type="module" src="./phase-2-crawler.mjs"></script>
+    </body>
+</html>
