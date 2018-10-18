@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Phase 3 crawler</title>
+
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+            crossorigin="anonymous"
+        >
+    </head>
+    <body>
+        <div class="container">
+            <h1>Phase 3 crawler</h1>
+            <div class="row" id="inputRow">
+                <div class="col">
+                    <h2>Input</h2>
+                    <textarea class="form-control" id="input" placeholder="Paste JSON data here"></textarea>
+                    <div class="custom-file mt-3 mb-3">
+                        <input class="custom-file-input" id="inputFile" type="file">
+                        <label class="custom-file-label" for="inputFile" aria-describedby="inputGroupFileAddon02">Choose input JSON file</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-2 pb-2">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Links:</label>
+                        <div class="input-group">
+                            <input id="processedLinksCount" class="form-control text-right" readonly tabindex="-1">
+                            <div class="input-group-append">
+                                <span class="input-group-text"> / </span>
+                                <input id="linkCount" class="form-control" readonly tabindex="-1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Songs:</label>
+                        <input id="songs" class="form-control" readonly tabindex="-1">
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Current link:</label>
+                        <input id="currentLink" class="form-control" readonly tabindex="-1">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Current song:</label>
+                        <input id="currentSong" class="form-control" readonly tabindex="-1">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <button id="run" class="btn btn-primary" disabled>Run</button>
+                    <button id="pause" class="btn btn-secondary" disabled>Pause</button>
+                    <button id="showResult" class="btn btn-success ml-5" disabled>Show result</button>
+                    <button id="downloadResult" class="btn btn-success" disabled>Download result</button>
+                    <button id="debug" class="btn btn-warning ml-5">Debug</button>
+                </div>
+            </div>
+            <div class="row justify-content-center pt-3">
+                <div class="col-4 text-center form-inline">
+                    <div class="form-group">
+                        <label class="pr-3">Delay between links:</label>
+                        <div class="input-group">
+                            <input id="delay" class="form-control text-right" type="number" min="0" value="1000">
+                            <div class="input-group-append">
+                                <div class="input-group-text">ms</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-3 d-none" id="resultRow">
+                <div class="col">
+                    <h2>Result</h2>
+                    <textarea id="result" class="form-control" readonly></textarea>
+                </div>
+            </div>
+        </div>
+
+        <script src="phase-3-crawler.mjs" type="module"></script>
+    </body>
+</html>

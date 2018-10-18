@@ -1,0 +1,22 @@
+{
+    "manifest_version": 2,
+    "name": "Phase 3 crawler",
+    "version": "1.0",
+
+    "browser_action": {
+        "browser_style": true,
+        "default_title": "Phase 3 crawler"
+    },
+
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+
+    "permissions": [
+        "downloads",
+        "tabs",
+        "https://web.archive.org/"
+    ]
+}
