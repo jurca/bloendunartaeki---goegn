@@ -13,6 +13,10 @@ const elements = {}
  */
 const clips = []
 /**
+ * @type {Map<Clip, number>}
+ */
+const clipIndexes = new Map()
+/**
  * @type {Object<string, Clip>}
  */
 const clipHashTable = {}
@@ -81,9 +85,10 @@ function init() {
     }
 
     elements.downloadResult.onclick = event => {
-        const downloadBody = new Blob([dumpState()], {type: 'application/json'})
+        const stateDump = dumpState()
+        const downloadBody = new Blob([stateDump], {type: 'application/json'})
+
         browser.downloads.download({
-            body: dumpState(),
             filename: 'phase-3-state.json',
             url: URL.createObjectURL(downloadBody),
         })
@@ -94,10 +99,12 @@ function loadInput(input) {
     const data = JSON.parse(input)
     elements.inputRow.classList.add('d-none')
 
-    if (data instanceof Array) {
+    if (data instanceof Array) { // import stage 2 result
         clips.push(...data)
         
-        for (const clip of clips) {
+        for (let i = 0; i < clips.length; i++) {
+            const clip = clips[i]
+            clipIndexes.set(clip, i)
             clipHashTable[hashObject(clip)] = clip
 
             if (clip.songSnapshotLink && !links.find(link => link.url === clip.songSnapshotLink)) {
@@ -114,7 +121,9 @@ function loadInput(input) {
             error: link.error && new Error(link.error.message),
             clip: clips[link.clipIndex],
         })))
-        for (const clip of clips) {
+        for (let i = 0; i < clips.length; i++) {
+            const clip = clips[i]
+            clipIndexes.set(clip, i)
             clipHashTable[hashObject(clip)] = clip
             addClipToSongs(clip)
         }
@@ -132,8 +141,8 @@ function dumpState() {
             url: link.url,
             done: link.done,
             error: link.error && {message: link.error.message},
-            clipIndex: clips.findIndex(clip => clip === link.clip),
-        }))
+            clipIndex: clipIndexes.get(link.clip),
+        })),
     })
 }
 
@@ -157,6 +166,7 @@ async function processNextLink() {
                 continue
             }
 
+            clipIndexes.set(clip, clips.length)
             clips.push(clip)
 
             if (!links.some(link => clip.songSnapshotLink === link.url)) {
