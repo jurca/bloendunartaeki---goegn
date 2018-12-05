@@ -114,13 +114,17 @@ function loadInput(input) {
             addClipToSongs(clip)
         }
     } else { // resume a partialy-completed crawling
-        clips.push(...data.clips)
-        links.push(...data.links.map(link => ({
-            url: link.url,
-            done: link.done,
-            error: link.error && new Error(link.error.message),
-            clip: clips[link.clipIndex],
-        })))
+        for (let i = 0; i < data.clips.length; i += 1000) {
+            clips.push(...data.clips.slice(i, i + 1000))
+        }
+        for (let i = 0; i < data.links.length; i += 1000) {
+            links.push(...data.links.slice(i, i + 1000).map(link => ({
+                url: link.url,
+                done: link.done,
+                error: link.error && new Error(link.error.message),
+                clip: clips[link.clipIndex],
+            })))
+        }
         for (let i = 0; i < clips.length; i++) {
             const clip = clips[i]
             clipIndexes.set(clip, i)
