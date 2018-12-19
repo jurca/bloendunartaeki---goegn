@@ -118,12 +118,20 @@ function loadInput(input) {
             clips.push(...data.clips.slice(i, i + 1000))
         }
         for (let i = 0; i < data.links.length; i += 1000) {
-            links.push(...data.links.slice(i, i + 1000).map(link => ({
-                url: link.url,
-                done: link.done,
-                error: link.error && new Error(link.error.message),
-                clip: clips[link.clipIndex],
-            })))
+            links.push(...data.links.slice(i, i + 1000).map(link => {
+                const [prefix, pathname] = [
+                    link[0].substring(0, link[0].indexOf('/')),
+                    link[0].substring(link[0].indexOf('/') + 1),
+                ]
+                const isHttps = prefix.endsWith('s')
+                let timestamp = isHttps ? prefix.slice(0, -1) : prefix
+                return {
+                    url: `https://web.archive.org/web/${timestamp}/http${isHttps ? 's' : ''}://www.mixer.cz/${pathname}`,
+                    done: !!link[1],
+                    error: link[2] ? new Error(link[2]) : null,
+                    clip: clips[link[3]],
+                }
+            }))
         }
         for (let i = 0; i < clips.length; i++) {
             const clip = clips[i]
@@ -139,14 +147,22 @@ function loadInput(input) {
 }
 
 function dumpState() {
+    const compressorCheck = /^https:\/\/web\.archive\.org\/web\/\d{14}\/https?:\/\/www\.mixer\.cz(?::80)?\/.+/
     return JSON.stringify({
         clips,
-        links: links.map(link => ({
-            url: link.url,
-            done: link.done,
-            error: link.error && {message: link.error.message},
-            clipIndex: clipIndexes.get(link.clip),
-        })),
+        links: links.map(link => {
+            if (!compressorCheck.test(link.url)) {
+                throw new Error(`Invalid link: ${link.url}`)
+            }
+            const isHttps = link.url.substring(43).startsWith('https:')
+            const hasPort = link.url.substring(62 + (isHttps ? 1 : 0)).startsWith(':80')
+            return [
+                `${link.url.substring(28, 42)}${isHttps ? 's' : ''}/${link.url.substring(63 + (isHttps ? 1 : 0) + (hasPort ? 3 : 0))}`,
+                link.done ? 1 : 0,
+                link.error ? link.error.message : 0,
+                clipIndexes.get(link.clip),
+            ]
+        }),
     })
 }
 
