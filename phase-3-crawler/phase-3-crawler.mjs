@@ -189,8 +189,10 @@ async function processNextLink() {
             clipIndexes.set(clip, clips.length)
             clips.push(clip)
 
-            if (!links.some(link => clip.songSnapshotLink === link.url)) {
-                links.push(clipToLink(clip))
+            if (clip.songSnapshotLink) {
+                if (!links.some(link => clip.songSnapshotLink === link.url)) {
+                    links.push(clipToLink(clip))
+                }
             }
 
             clipHashTable[hashObject(clip)] = clip
