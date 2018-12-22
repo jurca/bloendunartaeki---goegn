@@ -80,11 +80,6 @@ function init() {
         updateUI()
     }
 
-    elements.showResult.onclick = () => {
-        elements.result.value = dumpState()
-        elements.resultRow.classList.remove('d-none')
-    }
-
     elements.downloadResult.onclick = event => {
         const stateDump = dumpState()
         const downloadBody = new Blob([stateDump], {type: 'application/json'})
@@ -135,7 +130,6 @@ function loadInput(input) {
     }
 
     updateUI()
-    elements.showResult.disabled = false
     elements.downloadResult.disabled = false
 }
 
