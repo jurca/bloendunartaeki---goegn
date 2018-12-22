@@ -28,3 +28,29 @@ export const snapshotUrl = {
         return `https://web.archive.org/web/${timestamp}/http${isHttps ? 's' : ''}://www.mixer.cz/${pathname}`
     },
 }
+
+export const timestamp = {
+    encode(stringTimestamp) {
+        const [year, month, date, hour, minute, second] = stringTimestamp
+            .match(/(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)/)
+            .slice(1)
+            .map(fragment => parseInt(fragment, 10))
+        return this.encodeFromParts(year, month, date, hour, minute, second)
+    },
+
+    encodeFromParts(year, month, date, hour, minute, second) {
+        const timestamp = new Date()
+        timestamp.setUTCFullYear(year)
+        timestamp.setUTCMonth(month)
+        timestamp.setUTCDate(date)
+        timestamp.setUTCHours(hour)
+        timestamp.setUTCMinutes(minute)
+        timestamp.setUTCSeconds(second)
+        // too bad radix 72 (upper-case letters) is unavailable
+        return Math.floor(timestamp.getTime() / 1000).toString(36)
+    },
+
+    decode(timestamp) {
+        return new Date(parseInt(timestamp, 36) * 1000)
+    },
+}

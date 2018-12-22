@@ -1,3 +1,5 @@
+import {timestamp} from './encoder.mjs'
+
 export default async function extractContent(snapshotUrl) {
     const response = await fetch(snapshotUrl)
     if (!response.ok) {
@@ -16,18 +18,10 @@ export default async function extractContent(snapshotUrl) {
     const parsedUrl = new URL(snapshotUrl)
     const urlPathParts = parsedUrl.pathname.substring(1).split('/')
     const playlistId = parseInt(urlPathParts[5], 10) || 1
-    const [year, month, date, hour, minute, second] = urlPathParts[1]
-        .match(/(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)/)
-        .slice(1)
-        .map(fragment => parseInt(fragment, 10))
+    const crawlTimestamp = timestamp.encode(urlPathParts[1])
     const metadata = {
         playlistId,
-        year,
-        month,
-        date,
-        hour,
-        minute,
-        second,
+        crawlTimestamp,
     }
 
     return clips.map(clipContainer => {

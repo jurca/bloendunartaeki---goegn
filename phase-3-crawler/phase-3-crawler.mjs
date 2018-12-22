@@ -1,8 +1,8 @@
 import extractContent from './content-extractor.mjs'
-import {snapshotUrl} from './encoder.mjs'
+import {snapshotUrl, timestamp} from './encoder.mjs'
 
 /**
- * @typedef {{year: number, month: number, date: number, hour: number, minute: number, second: number, playlistId: number, interpreters: Array<string>, interpretersText: string, title: string, songSnapshotLink: string}} Clip
+ * @typedef {{crawlTimestamp: string, playlistId: number, interpreters: Array<string>, interpretersText: string, title: string, songSnapshotLink: string}} Clip
  */
 
  /**
@@ -99,7 +99,9 @@ function loadInput(input) {
         clips.push(...data)
         
         for (let i = 0; i < clips.length; i++) {
-            const clip = clips[i]
+            const {year, month, date, hour, minute, second, ...clip} = clips[i]
+            clip.crawlTimestamp = timestamp.encodeFromParts(year, month, date, hour, minute, second)
+
             clipIndexes.set(clip, i)
             clipHashTable[hashObject(clip)] = clip
 
