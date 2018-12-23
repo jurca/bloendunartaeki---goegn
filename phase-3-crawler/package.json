@@ -1,0 +1,23 @@
+{
+  "name": "phase-3-crawler",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Phase 3 crawler extracting the past content of mixer.cz from the web archive.",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jurca/bloendunartaeki-goegn.git"
+  },
+  "author": "Martin Jurča <mjurca@centrum.cz>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jurca/bloendunartaeki-goegn/issues"
+  },
+  "homepage": "https://github.com/jurca/bloendunartaeki-goegn#readme",
+  "dependencies": {
+    "@jurca/-x-ignore": "0.0.4"
+  }
+}
