@@ -31,24 +31,31 @@ export const snapshotUrl = {
 
 export const clip = {
     encode(clip) {
-        return [
+        const result = [
             clip.playlistId,
             clip.crawlTimestamp,
-            clip.interpreters,
-            clip.interpretersText,
             clip.title,
-            clip.songSnapshotLink ? snapshotUrl.encode(clip.songSnapshotLink) : 0,
+            clip.interpretersText,
         ]
+        if (clip.interpreters.length !== 1 || clip.interpreters[0] !== clip.interpretersText) {
+            result.push(clip.interpreters)
+        }
+        if (clip.songSnapshotLink) {
+            result.push(snapshotUrl.encode(clip.songSnapshotLink))
+        }
+        return result
     },
 
     decode(data) {
+        const interpreters = data[4] instanceof Array ? data[4] : [data[3]]
+        const encodedLink = typeof data[4] === 'string' ? data[4] : data[5]
         return {
             playlistId: data[0],
             crawlTimestamp: data[1],
-            title: data[4],
-            interpreters: data[2],
+            title: data[2],
+            interpreters,
             interpretersText: data[3],
-            songSnapshotLink: data[5] ? snapshotUrl.decode(data[5]) : null,
+            songSnapshotLink: encodedLink ? snapshotUrl.decode(encodedLink) : null,
         }
     },
 }
