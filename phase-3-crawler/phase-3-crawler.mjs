@@ -1,5 +1,5 @@
 import extractContent from './content-extractor.mjs'
-import {snapshotUrl, timestamp} from './encoder.mjs'
+import {clip as clipEncoder, snapshotUrl, timestamp} from './encoder.mjs'
 
 /**
  * @typedef {{crawlTimestamp: string, playlistId: number, interpreters: Array<string>, interpretersText: string, title: string, songSnapshotLink: string}} Clip
@@ -113,7 +113,7 @@ function loadInput(input) {
         }
     } else { // resume a partialy-completed crawling
         for (let i = 0; i < data.clips.length; i += 1000) {
-            clips.push(...data.clips.slice(i, i + 1000))
+            clips.push(...data.clips.slice(i, i + 1000).map(clip => clipEncoder.decode(clip)))
         }
         for (let i = 0; i < data.links.length; i += 1000) {
             links.push(...data.links.slice(i, i + 1000).map(link => ({
@@ -137,7 +137,7 @@ function loadInput(input) {
 
 function dumpState() {
     return JSON.stringify({
-        clips,
+        clips: clips.map(clip => clipEncoder.encode(clip)),
         links: links.map(link => [
             snapshotUrl.encode(link.url),
             link.done ? 1 : 0,

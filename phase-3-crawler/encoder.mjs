@@ -29,6 +29,30 @@ export const snapshotUrl = {
     },
 }
 
+export const clip = {
+    encode(clip) {
+        return [
+            clip.playlistId,
+            clip.crawlTimestamp,
+            clip.interpreters,
+            clip.interpretersText,
+            clip.title,
+            clip.songSnapshotLink ? snapshotUrl.encode(clip.songSnapshotLink) : 0,
+        ]
+    },
+
+    decode(data) {
+        return {
+            playlistId: data[0],
+            crawlTimestamp: data[1],
+            title: data[4],
+            interpreters: data[2],
+            interpretersText: data[3],
+            songSnapshotLink: data[5] ? snapshotUrl.decode(data[5]) : null,
+        }
+    },
+}
+
 export const timestamp = {
     encode(stringTimestamp) {
         const [year, month, date, hour, minute, second] = stringTimestamp
