@@ -14,7 +14,7 @@ export default class ActionButton extends Component {
 
         return `
             <style>
-                @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css';
+                @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'
             </style>
             <button class="btn${type ? ` btn-${type}` : ''}">
                 <slot/>
