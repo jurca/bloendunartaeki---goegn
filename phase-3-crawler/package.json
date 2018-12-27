@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/jurca/bloendunartaeki-goegn#readme",
   "dependencies": {
-    "@jurca/-x-ignore": "0.0.4"
+    "@jurca/-x-ignore": "0.0.5"
   }
 }

@@ -80,6 +80,11 @@ function init() {
         updateUI()
     }
 
+    elements.failedLinks.onResetLink = (link) => {
+        link.error = null
+        updateFailedLinksUI()
+    }
+
     elements.downloadResult.onclick = event => {
         const stateDump = dumpState()
         const downloadBody = new Blob([stateDump], {type: 'application/json'})
@@ -132,6 +137,7 @@ function loadInput(input) {
     }
 
     updateUI()
+    updateFailedLinksUI()
     elements.downloadResult.disabled = false
 }
 
@@ -183,6 +189,7 @@ async function processNextLink() {
     } catch (processingError) {
         console.error(processingError)
         linkToProcess.error = processingError
+        updateFailedLinksUI()
     }
     updateUI()
 
@@ -235,6 +242,11 @@ function updateUI() {
 
     elements.run.disabled = !!nextLinkTimeout
     elements.pause.disabled = !nextLinkTimeout
+}
+
+function updateFailedLinksUI() {
+    const failedLinks = links.filter(link => link.error)
+    elements.failedLinks.links = failedLinks
 }
 
 addEventListener('DOMContentLoaded', init)
