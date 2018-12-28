@@ -80,6 +80,10 @@ function init() {
         updateUI()
     }
 
+    elements.onlyUniqueLinks.onchange = () => {
+        updateUI()
+    }
+
     elements.failedLinks.onResetLink = (link) => {
         link.error = null
         updateFailedLinksUI()
@@ -154,7 +158,8 @@ function dumpState() {
 }
 
 async function processNextLink() {
-    const linkToProcess = links.find(link => !link.done && !link.error)
+    const linksToHandle = elements.onlyUniqueLinks.checked ? getMixerUniqueLinks() : links
+    const linkToProcess = linksToHandle.find(link => !link.done && !link.error)
     if (!linkToProcess) {
         nextLinkTimeout = null
         updateUI()
@@ -236,8 +241,9 @@ function clipToSongKey(clip) {
 }
 
 function updateUI() {
-    elements.processedLinksCount.value = links.filter(link => link.done).length
-    elements.linkCount.value = links.length
+    const linksToHandle = elements.onlyUniqueLinks.checked ? getMixerUniqueLinks() : links
+    elements.processedLinksCount.value = linksToHandle.filter(link => link.done).length
+    elements.linkCount.value = linksToHandle.length
     elements.songs.value = Object.keys(songs).length
 
     elements.run.disabled = !!nextLinkTimeout
@@ -247,6 +253,18 @@ function updateUI() {
 function updateFailedLinksUI() {
     const failedLinks = links.filter(link => link.error)
     elements.failedLinks.links = failedLinks
+}
+
+function getMixerUniqueLinks() {
+    const knownUrls = new Set()
+    const uniqueLinks = []
+    for (const link of links) {
+        if (!knownUrls.has(link.url.substring(43))) {
+            uniqueLinks.push(link)
+            knownUrls.add(link.url.substring(43))
+        }
+    }
+    return uniqueLinks
 }
 
 addEventListener('DOMContentLoaded', init)
